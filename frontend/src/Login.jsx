@@ -1,25 +1,45 @@
 import { useState } from 'react';
-import { TextInput, PasswordInput, Button, Paper, Title, Alert } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Paper, Title, Alert, Loader } from '@mantine/core';
 import axios from 'axios';
 
 export default function Login({ onLogin, onSwitchToRegister }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
+    
     try {
-      const res = await axios.post('http://localhost:8000/api/token/', {
+      // Login to get tokens
+      const loginRes = await axios.post('http://localhost:8000/api/token/', {
         username,
         password,
       });
-      localStorage.setItem('access', res.data.access);
-      localStorage.setItem('refresh', res.data.refresh);
-      onLogin();
+      
+      localStorage.setItem('access', loginRes.data.access);
+      localStorage.setItem('refresh', loginRes.data.refresh);
+      
+      // Fetch user info
+      const userRes = await axios.get('http://localhost:8000/api/accounts/me/', {
+        headers: { Authorization: `Bearer ${loginRes.data.access}` },
+      });
+      
+      onLogin(userRes.data);
     } catch (err) {
-      setError('Invalid credentials');
+      console.error('Login error:', err);
+      if (err.response?.status === 401) {
+        setError('Invalid username or password');
+      } else if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Login failed. Please try again.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,6 +53,7 @@ export default function Login({ onLogin, onSwitchToRegister }) {
           onChange={e => setUsername(e.target.value)}
           required
           mb="sm"
+          disabled={loading}
         />
         <PasswordInput
           label="Password"
@@ -40,10 +61,13 @@ export default function Login({ onLogin, onSwitchToRegister }) {
           onChange={e => setPassword(e.target.value)}
           required
           mb="md"
+          disabled={loading}
         />
         {error && <Alert color="red" mb="md">{error}</Alert>}
-        <Button type="submit" fullWidth>Login</Button>
-        <Button variant="subtle" fullWidth mt="sm" onClick={onSwitchToRegister}>
+        <Button type="submit" fullWidth disabled={loading}>
+          {loading ? <Loader size="sm" /> : 'Login'}
+        </Button>
+        <Button variant="subtle" fullWidth mt="sm" onClick={onSwitchToRegister} disabled={loading}>
           Don't have an account? Register
         </Button>
       </form>
