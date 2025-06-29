@@ -1,180 +1,254 @@
-# Smart Campus System – Local Setup & Testing Guide
+# Smart Campus Management System (SCMS)
 
-## Prerequisites
+A comprehensive campus management system built with Django (Backend) and React (Frontend) using Mantine UI components.
 
-- **Python 3.10+**
-- **Node.js 18+ & npm**
-- **MySQL Server** (8.x recommended)
-- **Git** (optional, for cloning)
+## 🚀 Features
 
----
+### Core Features
+- **Authentication & Authorization**: JWT-based authentication with role-based access control
+- **User Management**: Support for Students, Lecturers, and Staff roles
+- **Responsive Design**: Modern UI built with Mantine components
+- **Real-time Notifications**: Push notifications for important updates
+- **Mental Health Check-ins**: Student wellness monitoring system
 
-## 1. Clone the Repository
+### Planned Features
+- **Grade Management**: Track and manage student grades
+- **Study Plans**: Academic planning and course management
+- **Student Support**: Support ticket system and resources
+- **Analytics Dashboard**: Data visualization and reporting
 
+## 🛠️ Tech Stack
+
+### Backend
+- **Django 5.2.3**: Web framework
+- **Django REST Framework**: API development
+- **SimpleJWT**: JWT authentication
+- **MySQL**: Database
+- **CORS**: Cross-origin resource sharing
+
+### Frontend
+- **React 18**: UI library
+- **Vite**: Build tool
+- **Mantine**: UI component library
+- **Axios**: HTTP client
+
+## 📋 Prerequisites
+
+- Python 3.8+
+- Node.js 16+
+- MySQL 8.0+
+- Git
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
-cd SCMS
+git clone https://github.com/tinoewekwamberi/smart-campus-system.git
+cd smart-campus-system
 ```
 
----
-
-## 2. Backend Setup (Django)
-
-### a. Create and Activate Virtual Environment
-
+### 2. Backend Setup
 ```bash
+# Navigate to backend directory
 cd backend
-python -m venv ../venv
-# On Windows CMD
-..\venv\Scripts\activate.bat
-# On PowerShell
-..\venv\Scripts\Activate.ps1
-# On Git Bash
-source ../venv/Scripts/activate
-```
 
-### b. Install Python Dependencies
+# Create virtual environment
+python -m venv venv
 
-```bash
+# Activate virtual environment
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
-```
-If you don't have a `requirements.txt`, run:
-```bash
-pip install django djangorestframework djangorestframework-simplejwt django-cors-headers pymysql cryptography python-dotenv
-```
 
-### c. MySQL Database Setup
+# Create .env file
+cp .env.example .env
+# Edit .env with your database credentials
 
-1. **Create a database and user in MySQL:**
-   ```sql
-   CREATE DATABASE scms_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE USER 'tinoewekwamberi'@'localhost' IDENTIFIED BY 'yourpassword';
-   GRANT ALL PRIVILEGES ON scms_db.* TO 'tinoewekwamberi'@'localhost';
-   FLUSH PRIVILEGES;
-   ```
-
-2. **Update `backend/backend/.env` with your DB credentials.**
-
-### d. Generate a Django SECRET_KEY
-
-You can generate a secure secret key for your `.env` file using the provided script:
-
-```bash
-python generate_secret.py >> backend/.env
-```
-
-This will append a new `SECRET_KEY=...` line to your `.env` file.
-
-### e. Run Migrations
-
-```bash
-python manage.py makemigrations
+# Run migrations
 python manage.py migrate
-```
 
-### f. Start the Backend Server
+# Create superuser
+python manage.py createsuperuser
 
-```bash
+# Start development server
 python manage.py runserver
 ```
 
----
-
-## 3. Frontend Setup (React + Vite)
-
+### 3. Frontend Setup
 ```bash
-cd ../frontend
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
 ```
 
----
+### 4. Access the Application
+- **Backend API**: http://localhost:8000
+- **Frontend**: http://localhost:5173
+- **Admin Panel**: http://localhost:8000/admin
 
-## 4. Access the App
-
-- Backend: [http://localhost:8000/](http://localhost:8000/)
-- Frontend: [http://localhost:5173/](http://localhost:5173/) (or as shown in your terminal)
-
----
-
-## 5. Environment Variables
-
-- For production, use environment variables or a `.env` file for secrets and DB credentials.
-
----
-
-## 6. .gitignore Example
+## 📁 Project Structure
 
 ```
-venv/
-__pycache__/
-*.pyc
-db.sqlite3
-.env
-*.log
-node_modules/
-frontend/dist/
+SCMS/
+├── backend/                 # Django backend
+│   ├── accounts/           # Authentication app
+│   ├── users/              # User management app
+│   ├── backend/            # Django settings
+│   └── manage.py
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── pages/          # Page components
+│   │   └── utils/          # Utility functions
+│   └── package.json
+├── docs/                   # Documentation
+└── README.md
 ```
 
----
+## 🔧 Environment Variables
 
-## 7. Creating a Superuser (optional)
+### Backend (.env)
+```env
+SECRET_KEY=your-secret-key
+DEBUG=True
+DB_NAME=scms_db
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_HOST=localhost
+DB_PORT=3306
+```
 
+## 🚀 Deployment
+
+### Backend Deployment
+1. Set `DEBUG=False` in production
+2. Configure production database
+3. Set up static files serving
+4. Use Gunicorn or uWSGI
+
+### Frontend Deployment
+1. Build the project: `npm run build`
+2. Serve static files from a web server
+3. Configure environment variables
+
+## 🤝 Contributing
+
+### Git Workflow
+1. **Create a feature branch**: `git checkout -b feature/feature-name`
+2. **Make changes**: Write your code and tests
+3. **Commit changes**: Use conventional commit messages
+4. **Push to remote**: `git push origin feature/feature-name`
+5. **Create Pull Request**: Submit for review
+
+### Commit Message Convention
+```
+type(scope): description
+
+Examples:
+feat(auth): add JWT authentication
+fix(ui): resolve login form styling issue
+docs(readme): update installation instructions
+refactor(api): optimize user endpoint
+test(auth): add authentication tests
+```
+
+### Code Style
+- **Python**: Follow PEP 8 guidelines
+- **JavaScript**: Use ESLint configuration
+- **React**: Follow functional component patterns
+- **Django**: Follow Django best practices
+
+## 📝 API Documentation
+
+### Authentication Endpoints
+- `POST /api/token/` - Login
+- `POST /api/token/refresh/` - Refresh token
+- `POST /api/accounts/register/` - User registration
+- `GET /api/accounts/user-info/` - Get user info
+
+### User Management
+- `GET /api/users/` - List users (Admin only)
+- `POST /api/users/` - Create user (Admin only)
+- `PUT /api/users/{id}/` - Update user
+- `DELETE /api/users/{id}/` - Delete user (Admin only)
+
+## 🧪 Testing
+
+### Backend Tests
 ```bash
-python manage.py createsuperuser
+cd backend
+python manage.py test
 ```
 
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+## 📊 Database Schema
+
+### Users
+- `CustomUser`: Extended user model with roles
+- Roles: Student, Lecturer, Staff
+
+### Planned Models
+- `Course`: Course information
+- `Grade`: Student grades
+- `StudyPlan`: Academic plans
+- `MentalHealthCheck`: Wellness check-ins
+- `Notification`: System notifications
+
+## 🔒 Security
+
+- JWT token authentication
+- Role-based access control
+- CORS configuration
+- Environment variable protection
+- SQL injection prevention (Django ORM)
+
+## 📞 Support
+
+For support and questions:
+- Create an issue on GitHub
+- Contact the development team
+- Check the documentation
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎯 Roadmap
+
+### Phase 1: Core Features ✅
+- [x] User authentication
+- [x] Role-based access
+- [x] Basic UI components
+
+### Phase 2: Academic Management
+- [ ] Course management
+- [ ] Grade tracking
+- [ ] Study plans
+
+### Phase 3: Student Support
+- [ ] Mental health check-ins
+- [ ] Support ticket system
+- [ ] Resource library
+
+### Phase 4: Analytics & Reporting
+- [ ] Dashboard analytics
+- [ ] Performance reports
+- [ ] Data visualization
+
 ---
 
-## 8. Troubleshooting
-
-- Make sure your MySQL server is running and accessible.
-- If you see "access denied" errors, check your DB user privileges.
-- If you see "module not found" errors, ensure your virtual environment is activated.
-
----
-
-## 9. Contributing
-
-1. Fork the repo
-2. Create a feature branch
-3. Commit your changes
-4. Open a pull request
-
----
-
-## 10. License
-
-MIT
-
----
-
-## 4. Testing the App
-
-- **Register a new user** (choose a role: student, faculty, staff).
-- **Login** with your credentials.
-- **View the dashboard** (basic info for now).
-- **Logout** and try logging in again.
-- **(Optional)**: Access Django admin at `http://localhost:8000/admin/` with your superuser.
-
----
-
-## 5. Troubleshooting
-
-- **CORS errors?**  
-  Ensure `django-cors-headers` is installed and configured in `settings.py`.
-- **MySQL connection errors?**  
-  Double-check your database credentials and that MySQL is running.
-- **Migrations issues?**  
-  Ensure all migration files except `__init__.py` are deleted if resetting, and the MySQL database is empty.
-
----
-
-## 6. Next Steps
-
-- Implement role-based dashboards and navigation.
-- Add more backend endpoints and frontend pages as per requirements.
-
----
-
-**Happy coding!** 
+**Built with ❤️ by the SCMS Development Team** 
