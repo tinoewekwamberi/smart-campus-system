@@ -18,6 +18,9 @@ def user_info(request):
         "username": user.username,
         "email": user.email,
         "id": user.id,
+        "role": user.role,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
     })
 
 @api_view(['POST'])
@@ -27,15 +30,46 @@ def register(request):
     password = request.data.get('password')
     email = request.data.get('email')
     role = request.data.get('role')
+    first_name = request.data.get('first_name', '')
+    last_name = request.data.get('last_name', '')
+    
+    # Validate required fields
     if not username or not password or not email or not role:
         return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Validate role
+    valid_roles = ['student', 'lecturer', 'staff']
+    if role not in valid_roles:
+        return Response({'error': 'Invalid role. Must be student, lecturer, or staff.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Check if username already exists
     if User.objects.filter(username=username).exists():
         return Response({'error': 'Username already exists.'}, status=status.HTTP_400_BAD_REQUEST)
-    user = User.objects.create(
-        username=username,
-        email=email,
-        password=make_password(password)
-    )
-    user.save()
-    # Optionally, store role in user profile or a custom user model
-    return Response({'message': 'User registered successfully.'}, status=status.HTTP_201_CREATED)
+    
+    # Check if email already exists
+    if User.objects.filter(email=email).exists():
+        return Response({'error': 'Email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # Create user with role
+        user = User.objects.create(
+            username=username,
+            email=email,
+            password=make_password(password),
+            role=role,
+            first_name=first_name,
+            last_name=last_name
+        )
+        
+        return Response({
+            'message': 'User registered successfully.',
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'role': user.role
+            }
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        return Response({'error': f'Registration failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
