@@ -7,6 +7,8 @@ import MainDashboard from './components/Dashboard/MainDashboard'
 import CourseList from './components/Course/CourseList'
 import CourseDetail from './components/Course/CourseDetail'
 import ProfilePage from './components/Profile/ProfilePage'
+import StudentCheckin from './components/Wellness/StudentCheckin'
+import StaffDashboard from './components/Wellness/StaffDashboard'
 import './App.css'
 
 const API_BASE_URL = 'http://localhost:8000/api'
@@ -139,6 +141,24 @@ function App() {
               <AppLayout>
                 <ProfilePage />
               </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/wellness" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <StudentCheckin user={user} />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/wellness/staff" element={
+            <ProtectedRoute>
+              {user.role === 'staff' ? (
+                <AppLayout>
+                  <StaffDashboard user={user} />
+                </AppLayout>
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )}
             </ProtectedRoute>
           } />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
