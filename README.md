@@ -7,9 +7,26 @@ A comprehensive campus management system built with Django (Backend) and React (
 ### Core Features
 - **Authentication & Authorization**: JWT-based authentication with role-based access control
 - **User Management**: Support for Students, Lecturers, and Staff roles
+- **User Profile Management**: Edit personal info, upload profile picture, change password, and manage role-specific data (students, lecturers, staff)
 - **Responsive Design**: Modern UI built with Mantine components
 - **Real-time Notifications**: Push notifications for important updates
 - **Mental Health Check-ins**: Student wellness monitoring system
+
+## 👤 User Profile Management
+
+The SCMS includes a comprehensive user profile management system:
+
+- **Personal Information**: Edit name, phone, address, department, and bio.
+- **Profile Picture**: Upload and update your profile photo.
+- **Account Settings**: Change password, view account details, and see security info.
+- **Role-Specific Info**: Students, lecturers, and staff can manage academic, teaching, or administrative details relevant to their role.
+- **Navigation**: The Profile page is accessible from the sidebar navigation. **The Profile link now appears as the last item in the sidebar for all user roles.**
+- **Responsive**: Fully mobile-friendly and consistent with the rest of the app.
+
+**How to use:**
+1. Click the **Profile** link in the sidebar (last item).
+2. Use the tabs to manage your personal info, account settings, and role-specific data.
+3. Changes are saved instantly and reflected across the system.
 
 ### Planned Features
 - **Grade Management**: Track and manage student grades

@@ -6,6 +6,7 @@ import MainNavbar from './components/Navigation/Navbar'
 import MainDashboard from './components/Dashboard/MainDashboard'
 import CourseList from './components/Course/CourseList'
 import CourseDetail from './components/Course/CourseDetail'
+import ProfilePage from './components/Profile/ProfilePage'
 import './App.css'
 
 const API_BASE_URL = 'http://localhost:8000/api'
@@ -130,6 +131,13 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <CourseDetail user={user} />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <ProfilePage />
               </AppLayout>
             </ProtectedRoute>
           } />

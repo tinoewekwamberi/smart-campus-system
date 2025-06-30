@@ -52,8 +52,9 @@ export default function MainNavbar({ user, onLogout, children }) {
   const getNavItems = (role) => {
     const baseItems = [
       { label: 'Dashboard', icon: IconHome, link: '/dashboard' },
-      { label: 'Profile', icon: IconUser, link: '/profile' },
     ];
+
+    const profileItem = { label: 'Profile', icon: IconUser, link: '/profile' };
 
     switch (role) {
       case 'student':
@@ -63,8 +64,8 @@ export default function MainNavbar({ user, onLogout, children }) {
           { label: 'My Grades', icon: IconChartBar, link: '/grades' },
           { label: 'Study Plans', icon: IconBook, link: '/study-plans' },
           { label: 'Wellness Check-in', icon: IconUser, link: '/wellness' },
+          profileItem,
         ];
-      
       case 'lecturer':
         return [
           ...baseItems,
@@ -72,8 +73,8 @@ export default function MainNavbar({ user, onLogout, children }) {
           { label: 'Grade Management', icon: IconChartBar, link: '/grades' },
           { label: 'Student Roster', icon: IconUsers, link: '/students' },
           { label: 'Announcements', icon: IconBell, link: '/announcements' },
+          profileItem,
         ];
-      
       case 'staff':
         return [
           ...baseItems,
@@ -81,10 +82,10 @@ export default function MainNavbar({ user, onLogout, children }) {
           { label: 'Course Management', icon: IconBook, link: '/courses' },
           { label: 'System Reports', icon: IconChartBar, link: '/reports' },
           { label: 'Support Tickets', icon: IconBell, link: '/support' },
+          profileItem,
         ];
-      
       default:
-        return baseItems;
+        return [...baseItems, profileItem];
     }
   };
 

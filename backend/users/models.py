@@ -11,3 +11,9 @@ class CustomUser(AbstractUser):
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     # first_name and last_name are already in AbstractUser
+    phone = models.CharField(max_length=20, blank=True)
+    address = models.CharField(max_length=255, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    student_id = models.CharField(max_length=30, blank=True)
+    department = models.CharField(max_length=100, blank=True)
+    bio = models.TextField(blank=True)
