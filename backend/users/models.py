@@ -17,3 +17,11 @@ class CustomUser(AbstractUser):
     student_id = models.CharField(max_length=30, blank=True)
     department = models.CharField(max_length=100, blank=True)
     bio = models.TextField(blank=True)
+    STAFF_TYPE_CHOICES = [
+        ('counsellor', 'Counsellor'),
+        ('admin', 'Admin Staff'),
+        ('housekeeping', 'Housekeeping'),
+        ('online_ordering', 'Online Ordering'),
+        ('staff', 'General Staff'),
+    ]
+    staff_type = models.CharField(max_length=30, choices=STAFF_TYPE_CHOICES, blank=True, null=True, help_text='Type of staff (if role is staff)')
