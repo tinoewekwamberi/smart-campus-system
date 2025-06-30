@@ -24,7 +24,7 @@ export default function Login({ onLogin, onSwitchToRegister }) {
       localStorage.setItem('refresh', loginRes.data.refresh);
       
       // Fetch user info
-      const userRes = await axios.get('http://localhost:8000/api/accounts/me/', {
+      const userRes = await axios.get('http://localhost:8000/api/users/profile/self_profile/', {
         headers: { Authorization: `Bearer ${loginRes.data.access}` },
       });
       

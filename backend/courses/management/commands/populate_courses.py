@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from courses.models import Course, CourseSchedule, CourseMaterial
+from courses.models import Course, CourseSchedule, CourseMaterial, Enrollment
 from datetime import time
+import random
 
 User = get_user_model()
 
@@ -184,4 +185,37 @@ class Command(BaseCommand):
         
         self.stdout.write(
             self.style.SUCCESS(f'Successfully created {len(created_courses)} courses!')
-        ) 
+        )
+
+        # --- Add sample students and enrollments ---
+        self.stdout.write('Creating sample students and enrollments...')
+        students = []
+        for i in range(1, 6):
+            student, created = User.objects.get_or_create(
+                username=f'student{i}',
+                defaults={
+                    'email': f'student{i}@richfield.ac.za',
+                    'first_name': f'Student{i}',
+                    'last_name': 'Test',
+                    'role': 'student',
+                    'is_staff': False
+                }
+            )
+            if created:
+                student.set_password('password123')
+                student.save()
+                self.stdout.write(f'Created student: {student.username}')
+            students.append(student)
+
+        for student in students:
+            for course in Course.objects.all():
+                if not Enrollment.objects.filter(student=student, course=course).exists():
+                    percentage = random.uniform(45, 95)
+                    Enrollment.objects.create(
+                        student=student,
+                        course=course,
+                        percentage_score=round(percentage, 2),
+                        status='completed',
+                        notes='Auto-generated for testing'
+                    )
+        self.stdout.write(self.style.SUCCESS('Sample students and enrollments created!')) 

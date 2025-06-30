@@ -10,7 +10,8 @@ import {
   Avatar,
   Menu,
   ActionIcon,
-  useMantineTheme
+  useMantineTheme,
+  NavLink
 } from '@mantine/core';
 import { 
   IconHome, 
@@ -21,8 +22,12 @@ import {
   IconLogout,
   IconUser,
   IconBell,
-  IconMenu2
+  IconMenu2,
+  IconHeartRateMonitor,
+  IconShoppingCart,
+  IconHistory
 } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 export default function MainNavbar({ user, onLogout, children }) {
   const [opened, setOpened] = useState(false);
@@ -60,6 +65,10 @@ export default function MainNavbar({ user, onLogout, children }) {
       case 'student':
         return [
           ...baseItems,
+          { label: 'Order Online', icon: IconShoppingCart, link: '/ordering' },
+          { label: 'Order History', icon: IconHistory, link: '/ordering/history' },
+          { label: 'Support Request', icon: IconBell, link: '/support/request' },
+          { label: 'Support History', icon: IconHistory, link: '/support/history' },
           { label: 'My Courses', icon: IconBook, link: '/courses' },
           { label: 'My Grades', icon: IconChartBar, link: '/grades' },
           { label: 'Study Plans', icon: IconBook, link: '/study-plans' },
@@ -75,15 +84,26 @@ export default function MainNavbar({ user, onLogout, children }) {
           { label: 'Announcements', icon: IconBell, link: '/announcements' },
           profileItem,
         ];
-      case 'staff':
-        return [
+      case 'staff': {
+        const staffNav = [
           ...baseItems,
+          { label: 'Order Online', icon: IconShoppingCart, link: '/ordering' },
+          { label: 'Order History', icon: IconHistory, link: '/ordering/history' },
+          { label: 'Order Management', icon: IconUsers, link: '/ordering/manage' },
+          { label: 'Support Request', icon: IconBell, link: '/support/request' },
+          { label: 'Support History', icon: IconHistory, link: '/support/history' },
+          { label: 'Support Management', icon: IconUsers, link: '/support/manage' },
           { label: 'User Management', icon: IconUsers, link: '/users' },
           { label: 'Course Management', icon: IconBook, link: '/courses' },
           { label: 'System Reports', icon: IconChartBar, link: '/reports' },
           { label: 'Support Tickets', icon: IconBell, link: '/support' },
-          profileItem,
         ];
+        if (user?.staff_type === 'counsellor' || user?.staff_type === 'admin') {
+          staffNav.push({ label: 'Wellness Dashboard', icon: IconHeartRateMonitor, link: '/wellness/staff' });
+        }
+        staffNav.push(profileItem);
+        return staffNav;
+      }
       default:
         return [...baseItems, profileItem];
     }
@@ -200,6 +220,8 @@ export default function MainNavbar({ user, onLogout, children }) {
               onClick={handleNavigation}
             />
           ))}
+          <NavLink label="Diary" component={Link} to="/diary" />
+          <NavLink label="Calendar" component={Link} to="/calendar" />
         </Stack>
       </AppShell.Navbar>
 

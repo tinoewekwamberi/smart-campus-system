@@ -30,6 +30,8 @@ class CounsellingSession(models.Model):
         ("scheduled", "Scheduled"),
         ("completed", "Completed"),
         ("cancelled", "Cancelled"),
+        ("rejected", "Rejected"),
+        ("rescheduled", "Rescheduled"),
     ]
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="counselling_sessions")
     staff = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="assigned_sessions")
@@ -37,6 +39,10 @@ class CounsellingSession(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    rescheduled_at = models.DateTimeField(null=True, blank=True)
+    reschedule_reason = models.TextField(blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_sessions")
+    approved_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="approved_sessions")
 
     def __str__(self):
         return f"Session for {self.student} with {self.staff} ({self.status})"

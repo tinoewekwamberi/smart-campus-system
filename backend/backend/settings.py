@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'users',
     'courses',
     'wellness',
+    'orders',
+    'support',
+    'diary',
 ]
 
 MIDDLEWARE = [
