@@ -28,7 +28,7 @@ import {
 } from '@tabler/icons-react';
 
 export default function StaffDashboard({ user }) {
-  // Mock data inspired by Richfield's administrative operations
+  // Mock data inspired by Richfield's administrative operations with South African conventions
   const mockData = {
     totalStudents: 1247,
     totalFaculty: 89,
@@ -40,20 +40,20 @@ export default function StaffDashboard({ user }) {
       { event: 'CISCO Networking Competition', date: '2024-01-25', attendees: 85, type: 'Competition' },
     ],
     pendingRequests: [
-      { type: 'Course Registration', student: 'John Smith', course: 'IT 301', status: 'Pending' },
-      { type: 'Certification Request', student: 'Sarah Johnson', course: 'IT 201', status: 'Approved' },
-      { type: 'Grade Appeal', student: 'Mike Davis', course: 'IT 401', status: 'Under Review' },
+      { type: 'Course Registration', student: 'Lerato Molefe', course: 'IT 301', status: 'Pending' },
+      { type: 'Certification Request', student: 'Sipho Nkosi', course: 'IT 201', status: 'Approved' },
+      { type: 'Grade Appeal', student: 'Nokuthula Dlamini', course: 'IT 401', status: 'Under Review' },
     ],
     departmentStats: [
-      { department: 'Information Technology', students: 456, courses: 23, faculty: 34, avgGrade: 87 },
-      { department: 'Computer Science', students: 389, courses: 18, faculty: 28, avgGrade: 89 },
-      { department: 'Data Science', students: 234, courses: 12, faculty: 15, avgGrade: 91 },
-      { department: 'Network Engineering', students: 168, courses: 14, faculty: 12, avgGrade: 85 },
+      { department: 'Information Technology', students: 456, courses: 23, faculty: 34, avgScore: 78 },
+      { department: 'Computer Science', students: 389, courses: 18, faculty: 28, avgScore: 80 },
+      { department: 'Data Science', students: 234, courses: 12, faculty: 15, avgScore: 82 },
+      { department: 'Network Engineering', students: 168, courses: 14, faculty: 12, avgScore: 76 },
     ],
     recentEnrollments: [
-      { student: 'Alex Thompson', program: 'BSc IT', date: '2024-01-08', status: 'Enrolled' },
-      { student: 'Emma Wilson', program: 'BSc Computer Science', date: '2024-01-07', status: 'Enrolled' },
-      { student: 'David Brown', program: 'BSc Data Science', date: '2024-01-06', status: 'Pending' },
+      { student: 'Thabo Mokoena', program: 'BSc IT', date: '2024-01-08', status: 'Enrolled' },
+      { student: 'Zanele Ndlovu', program: 'BSc Computer Science', date: '2024-01-07', status: 'Enrolled' },
+      { student: 'Kabelo Ramaphosa', program: 'BSc Data Science', date: '2024-01-06', status: 'Pending' },
     ],
     certificationStats: {
       totalCertifications: 892,
@@ -198,7 +198,7 @@ export default function StaffDashboard({ user }) {
               <Table.Th>Students</Table.Th>
               <Table.Th>Courses</Table.Th>
               <Table.Th>Faculty</Table.Th>
-              <Table.Th>Avg Grade</Table.Th>
+              <Table.Th>Avg Score</Table.Th>
               <Table.Th>Actions</Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -209,21 +209,23 @@ export default function StaffDashboard({ user }) {
                   <Text fw={500}>{dept.department}</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Badge variant="light">{dept.students}</Badge>
+                  <Text>{dept.students}</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Text size="sm">{dept.courses}</Text>
+                  <Text>{dept.courses}</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Text size="sm">{dept.faculty}</Text>
+                  <Text>{dept.faculty}</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Badge color={dept.avgGrade >= 90 ? 'green' : dept.avgGrade >= 85 ? 'blue' : 'orange'}>
-                    {dept.avgGrade}%
+                  <Badge color={dept.avgScore >= 80 ? 'green' : dept.avgScore >= 70 ? 'blue' : 'orange'}>
+                    {dept.avgScore}%
                   </Badge>
                 </Table.Td>
                 <Table.Td>
-                  <Button size="xs" variant="light">View Details</Button>
+                  <Button size="xs" variant="light">
+                    View Details
+                  </Button>
                 </Table.Td>
               </Table.Tr>
             ))}
@@ -231,77 +233,78 @@ export default function StaffDashboard({ user }) {
         </Table>
       </Card>
 
-      {/* Recent Enrollments and Certifications */}
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Title order={3} mb="md">Recent Enrollments</Title>
-            <Stack gap="sm">
-              {mockData.recentEnrollments.map((enrollment, index) => (
-                <Group key={index} justify="space-between" p="xs" bg="gray.0" style={{ borderRadius: 8 }}>
-                  <div>
-                    <Text fw={500} size="sm">{enrollment.student}</Text>
-                    <Text size="xs" c="dimmed">{enrollment.program}</Text>
-                  </div>
-                  <Group gap="xs">
-                    <Badge color={enrollment.status === 'Enrolled' ? 'green' : 'orange'}>
-                      {enrollment.status}
-                    </Badge>
-                    <Text size="xs" c="dimmed">{enrollment.date}</Text>
-                  </Group>
-                </Group>
-              ))}
-            </Stack>
-          </Card>
-        </Grid.Col>
-
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Title order={3} mb="md">Certification Overview</Title>
-            <Stack gap="md">
-              <Group justify="space-between">
-                <Text>Total Certifications</Text>
-                <Badge size="lg" color="blue">{mockData.certificationStats.totalCertifications}</Badge>
-              </Group>
-              <Group justify="space-between">
-                <Text>This Month</Text>
-                <Badge size="lg" color="green">{mockData.certificationStats.thisMonth}</Badge>
-              </Group>
-              <div>
-                <Text size="sm" fw={500} mb="xs">Top Certifications:</Text>
-                <List size="sm">
-                  {mockData.certificationStats.topCertifications.map((cert, index) => (
-                    <List.Item key={index}>
-                      <Text size="xs">{cert}</Text>
-                    </List.Item>
-                  ))}
-                </List>
-              </div>
-            </Stack>
-          </Card>
-        </Grid.Col>
-      </Grid>
-
-      {/* Quick Actions */}
+      {/* Recent Enrollments */}
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Title order={3} mb="md">Administrative Actions</Title>
-        <Group>
-          <Button leftSection={<IconUsers size={16} />} variant="light" color="blue">
-            Manage Students
-          </Button>
-          <Button leftSection={<IconBook size={16} />} variant="light" color="green">
-            Course Management
-          </Button>
-          <Button leftSection={<IconCalendar size={16} />} variant="light" color="orange">
-            Event Planning
-          </Button>
-          <Button leftSection={<IconCertificate size={16} />} variant="light" color="purple">
-            Certification Tracking
-          </Button>
-          <Button leftSection={<IconReportMoney size={16} />} variant="light" color="red">
-            Financial Reports
-          </Button>
-        </Group>
+        <Title order={3} mb="md">Recent Enrollments</Title>
+        <Grid>
+          {mockData.recentEnrollments.map((enrollment, index) => (
+            <Grid.Col key={index} span={{ base: 12, md: 4 }}>
+              <Card withBorder p="md">
+                <Group justify="space-between" mb="xs">
+                  <Text fw={500} size="sm">{enrollment.student}</Text>
+                  <Badge 
+                    color={enrollment.status === 'Enrolled' ? 'green' : 'orange'}
+                    variant="light"
+                  >
+                    {enrollment.status}
+                  </Badge>
+                </Group>
+                <Text size="xs" c="dimmed">{enrollment.program}</Text>
+                <Text size="xs" c="dimmed">Enrolled: {enrollment.date}</Text>
+              </Card>
+            </Grid.Col>
+          ))}
+        </Grid>
+      </Card>
+
+      {/* Certification Statistics */}
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Title order={3} mb="md">Industry Certification Statistics</Title>
+        <Grid>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Card withBorder p="md">
+              <Group justify="space-between" mb="xs">
+                <Text fw={500}>Total Certifications</Text>
+                <IconCertificate size={20} />
+              </Group>
+              <Text size="xl" fw={700} c="blue">
+                {mockData.certificationStats.totalCertifications}
+              </Text>
+              <Text size="xs" c="dimmed">
+                All time
+              </Text>
+            </Card>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Card withBorder p="md">
+              <Group justify="space-between" mb="xs">
+                <Text fw={500}>This Month</Text>
+                <IconChartBar size={20} />
+              </Group>
+              <Text size="xl" fw={700} c="green">
+                {mockData.certificationStats.thisMonth}
+              </Text>
+              <Text size="xs" c="dimmed">
+                New certifications
+              </Text>
+            </Card>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Card withBorder p="md">
+              <Group justify="space-between" mb="xs">
+                <Text fw={500}>Top Certifications</Text>
+                <IconSchool size={20} />
+              </Group>
+              <Stack gap="xs">
+                {mockData.certificationStats.topCertifications.map((cert, index) => (
+                  <Text key={index} size="sm" fw={500}>
+                    {cert}
+                  </Text>
+                ))}
+              </Stack>
+            </Card>
+          </Grid.Col>
+        </Grid>
       </Card>
     </Stack>
   );

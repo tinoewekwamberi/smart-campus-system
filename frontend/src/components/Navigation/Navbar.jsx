@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppShell, 
   Text, 
@@ -26,6 +27,8 @@ import {
 export default function MainNavbar({ user, onLogout, children }) {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const getRoleColor = (role) => {
     switch (role) {
@@ -87,25 +90,35 @@ export default function MainNavbar({ user, onLogout, children }) {
 
   const navItems = getNavItems(user?.role);
 
-  const NavItem = ({ item, onClick }) => (
-    <Button
-      variant="subtle"
-      leftSection={<item.icon size={16} />}
-      fullWidth
-      justify="left"
-      onClick={() => onClick(item.link)}
-      styles={{
-        root: {
-          color: theme.colors.gray[7],
-          '&:hover': {
-            backgroundColor: theme.colors.gray[1],
+  const NavItem = ({ item, onClick }) => {
+    const isActive = location.pathname === item.link;
+    
+    return (
+      <Button
+        variant={isActive ? "light" : "subtle"}
+        leftSection={<item.icon size={16} />}
+        fullWidth
+        justify="left"
+        onClick={() => onClick(item.link)}
+        styles={{
+          root: {
+            color: isActive ? theme.colors.blue[7] : theme.colors.gray[7],
+            backgroundColor: isActive ? theme.colors.blue[0] : 'transparent',
+            '&:hover': {
+              backgroundColor: isActive ? theme.colors.blue[1] : theme.colors.gray[1],
+            },
           },
-        },
-      }}
-    >
-      {item.label}
-    </Button>
-  );
+        }}
+      >
+        {item.label}
+      </Button>
+    );
+  };
+
+  const handleNavigation = (link) => {
+    navigate(link);
+    setOpened(false); // Close mobile menu
+  };
 
   return (
     <AppShell
@@ -127,7 +140,9 @@ export default function MainNavbar({ user, onLogout, children }) {
             >
               <IconMenu2 size={18} />
             </ActionIcon>
-            <Text fw={700} size="lg">SCMS</Text>
+            <Text fw={700} size="lg" style={{ cursor: 'pointer' }} onClick={() => navigate('/dashboard')}>
+              SCMS
+            </Text>
           </Group>
           
           <Group>
@@ -155,7 +170,7 @@ export default function MainNavbar({ user, onLogout, children }) {
                 <Menu.Divider />
                 <Menu.Item 
                   icon={<IconSettings size={14} />}
-                  onClick={() => {/* Navigate to settings */}}
+                  onClick={() => navigate('/profile')}
                 >
                   Settings
                 </Menu.Item>
@@ -181,10 +196,7 @@ export default function MainNavbar({ user, onLogout, children }) {
             <NavItem 
               key={index} 
               item={item} 
-              onClick={(link) => {
-                console.log(`Navigate to: ${link}`);
-                // TODO: Implement navigation
-              }}
+              onClick={handleNavigation}
             />
           ))}
         </Stack>

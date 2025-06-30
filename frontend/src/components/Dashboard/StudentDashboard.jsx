@@ -23,9 +23,9 @@ import {
 } from '@tabler/icons-react';
 
 export default function StudentDashboard({ user }) {
-  // Mock data inspired by Richfield's IT curriculum
+  // Mock data inspired by Richfield's IT curriculum with South African conventions
   const mockData = {
-    currentGPA: 3.85,
+    averageScore: 78.5,
     totalCredits: 78,
     requiredCredits: 120,
     enrolledCourses: 5,
@@ -35,9 +35,9 @@ export default function StudentDashboard({ user }) {
       { course: 'IT 401', assignment: 'IBM Data Analytics Report', dueDate: '2024-01-18' },
     ],
     recentGrades: [
-      { course: 'IT 101', grade: 'A', score: 94, badge: 'IBM Certified' },
-      { course: 'IT 201', grade: 'A-', score: 91, badge: 'AWS Certified' },
-      { course: 'IT 301', grade: 'B+', score: 87, badge: 'CISCO Certified' },
+      { course: 'IT 101', grade: 'A', score: 85, badge: 'IBM Certified' },
+      { course: 'IT 201', grade: 'B', score: 72, badge: 'AWS Certified' },
+      { course: 'IT 301', grade: 'B', score: 78, badge: 'CISCO Certified' },
     ],
     wellnessStatus: 'Excellent',
     lastCheckIn: '2024-01-08',
@@ -59,14 +59,14 @@ export default function StudentDashboard({ user }) {
         <Grid.Col span={{ base: 12, md: 3 }}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Group justify="space-between" mb="xs">
-              <Text fw={500}>Current GPA</Text>
+              <Text fw={500}>Average Score</Text>
               <IconChartBar size={20} />
             </Group>
             <Text size="xl" fw={700} c="blue">
-              {mockData.currentGPA}
+              {mockData.averageScore}%
             </Text>
             <Text size="xs" c="dimmed">
-              Excellent standing
+              Good standing
             </Text>
           </Card>
         </Grid.Col>
@@ -163,7 +163,7 @@ export default function StudentDashboard({ user }) {
                     <Text size="xs" c="dimmed">{grade.badge}</Text>
                   </div>
                   <Group gap="xs">
-                    <Badge color={grade.score >= 90 ? 'green' : grade.score >= 80 ? 'blue' : 'orange'}>
+                    <Badge color={grade.score >= 80 ? 'green' : grade.score >= 70 ? 'blue' : 'orange'}>
                       {grade.grade}
                     </Badge>
                     <Text size="xs" c="dimmed">{grade.score}%</Text>

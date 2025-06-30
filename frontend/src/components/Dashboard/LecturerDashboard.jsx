@@ -26,7 +26,7 @@ import {
 } from '@tabler/icons-react';
 
 export default function LecturerDashboard({ user }) {
-  // Mock data inspired by Richfield's IT curriculum
+  // Mock data inspired by Richfield's IT curriculum with South African conventions
   const mockData = {
     totalStudents: 156,
     activeCourses: 4,
@@ -42,15 +42,15 @@ export default function LecturerDashboard({ user }) {
       { course: 'IT 401', assignment: 'Data Analysis Report', submissions: 35, dueDate: '2024-01-15' },
     ],
     coursePerformance: [
-      { course: 'IT 101 - Programming Fundamentals', avgGrade: 87, completion: 94, certifications: 89 },
-      { course: 'IT 201 - AWS Cloud Computing', avgGrade: 91, completion: 96, certifications: 92 },
-      { course: 'IT 301 - CISCO Networking', avgGrade: 84, completion: 91, certifications: 87 },
-      { course: 'IT 401 - IBM Data Analytics', avgGrade: 89, completion: 93, certifications: 90 },
+      { course: 'IT 101 - Programming Fundamentals', avgScore: 78, completion: 94, certifications: 89 },
+      { course: 'IT 201 - AWS Cloud Computing', avgScore: 82, completion: 96, certifications: 92 },
+      { course: 'IT 301 - CISCO Networking', avgScore: 75, completion: 91, certifications: 87 },
+      { course: 'IT 401 - IBM Data Analytics', avgScore: 80, completion: 93, certifications: 90 },
     ],
     recentCertifications: [
-      { student: 'John Smith', course: 'IT 201', certification: 'AWS Cloud Practitioner', date: '2024-01-08' },
-      { student: 'Sarah Johnson', course: 'IT 301', certification: 'CISCO CCNA', date: '2024-01-07' },
-      { student: 'Mike Davis', course: 'IT 401', certification: 'IBM Data Science', date: '2024-01-06' },
+      { student: 'Lerato Molefe', course: 'IT 201', certification: 'AWS Cloud Practitioner', date: '2024-01-08' },
+      { student: 'Sipho Nkosi', course: 'IT 301', certification: 'CISCO CCNA', date: '2024-01-07' },
+      { student: 'Nokuthula Dlamini', course: 'IT 401', certification: 'IBM Data Science', date: '2024-01-06' },
     ]
   };
 
@@ -186,7 +186,7 @@ export default function LecturerDashboard({ user }) {
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Course</Table.Th>
-              <Table.Th>Avg Grade</Table.Th>
+              <Table.Th>Avg Score</Table.Th>
               <Table.Th>Completion Rate</Table.Th>
               <Table.Th>Certification Rate</Table.Th>
               <Table.Th>Actions</Table.Th>
@@ -199,20 +199,20 @@ export default function LecturerDashboard({ user }) {
                   <Text fw={500}>{course.course}</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Badge color={course.avgGrade >= 90 ? 'green' : course.avgGrade >= 80 ? 'blue' : 'orange'}>
-                    {course.avgGrade}%
+                  <Badge color={course.avgScore >= 80 ? 'green' : course.avgScore >= 70 ? 'blue' : 'orange'}>
+                    {course.avgScore}%
                   </Badge>
                 </Table.Td>
                 <Table.Td>
-                  <Progress value={course.completion} size="sm" />
-                  <Text size="xs" c="dimmed">{course.completion}%</Text>
+                  <Text>{course.completion}%</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Progress value={course.certifications} size="sm" color="purple" />
-                  <Text size="xs" c="dimmed">{course.certifications}%</Text>
+                  <Text>{course.certifications}%</Text>
                 </Table.Td>
                 <Table.Td>
-                  <Button size="xs" variant="light">View Details</Button>
+                  <Button size="xs" variant="light">
+                    View Details
+                  </Button>
                 </Table.Td>
               </Table.Tr>
             ))}
@@ -222,23 +222,19 @@ export default function LecturerDashboard({ user }) {
 
       {/* Recent Certifications */}
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Title order={3} mb="md">Recent Student Certifications</Title>
+        <Title order={3} mb="md">Recent Industry Certifications</Title>
         <Grid>
           {mockData.recentCertifications.map((cert, index) => (
             <Grid.Col key={index} span={{ base: 12, md: 4 }}>
               <Card withBorder p="md">
-                <Group mb="xs">
-                  <Avatar size="sm" color="blue">
-                    {cert.student.split(' ').map(n => n[0]).join('')}
-                  </Avatar>
-                  <div>
-                    <Text fw={500} size="sm">{cert.student}</Text>
-                    <Text size="xs" c="dimmed">{cert.course}</Text>
-                  </div>
+                <Group justify="space-between" mb="xs">
+                  <Text fw={500} size="sm">{cert.student}</Text>
+                  <Badge color="green" variant="light">
+                    Certified
+                  </Badge>
                 </Group>
-                <Badge color="green" variant="light" mb="xs">
-                  {cert.certification}
-                </Badge>
+                <Text size="xs" c="dimmed">{cert.course}</Text>
+                <Text size="sm" fw={500} mt="xs">{cert.certification}</Text>
                 <Text size="xs" c="dimmed">Achieved: {cert.date}</Text>
               </Card>
             </Grid.Col>
